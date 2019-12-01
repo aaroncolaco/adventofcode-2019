@@ -1,12 +1,125 @@
 defmodule FuelCalculator do
-    # def calc_fuel(fuel, acc \\ 0)
+  def calc_fuel(fuel, acc \\ 0)
 
-    # <=6 because div(6, 3) - 2 = 0
-    def calc_fuel(fuel) when fuel <=6, do: 0
+  # <=6 because div(6, 3) - 2 = 0
+  def calc_fuel(fuel, acc) when fuel <= 6, do: acc
 
-    def calc_fuel(fuel), do: calc_fuel_for_mass(fuel) + calc_fuel(calc_fuel_for_mass(fuel))
+  def calc_fuel(fuel, acc),
+    do: calc_fuel(calc_fuel_for_mass(fuel), calc_fuel_for_mass(fuel) + acc)
 
-    def calc_fuel_for_mass(mass), do: div(mass, 3) - 2
+  def calc_fuel_for_mass(mass), do: div(mass, 3) - 2
 end
 
-IO.inspect FuelCalculator.calc_fuel 1969
+# Tests
+# IO.inspect(50346 === FuelCalculator.calc_fuel(100_756))
+# IO.inspect(966 === FuelCalculator.calc_fuel(1969))
+
+raw_data = [
+  141_923,
+  145_715,
+  63157,
+  142_712,
+  147_191,
+  96667,
+  117_032,
+  98123,
+  135_120,
+  90609,
+  132_022,
+  61962,
+  110_315,
+  78993,
+  130_183,
+  102_188,
+  128_800,
+  140_640,
+  144_402,
+  133_746,
+  66157,
+  136_169,
+  88585,
+  82083,
+  78884,
+  66913,
+  142_607,
+  62297,
+  116_267,
+  92283,
+  108_383,
+  142_698,
+  53334,
+  139_604,
+  144_184,
+  89522,
+  142_032,
+  68327,
+  111_034,
+  58033,
+  72836,
+  90483,
+  111_008,
+  91385,
+  115_528,
+  66856,
+  76318,
+  63000,
+  61721,
+  86102,
+  89367,
+  91018,
+  126_390,
+  135_550,
+  106_711,
+  118_434,
+  117_698,
+  108_304,
+  98998,
+  82998,
+  147_998,
+  83344,
+  149_309,
+  53964,
+  111_042,
+  112_244,
+  114_337,
+  134_419,
+  76114,
+  147_869,
+  107_076,
+  78626,
+  66552,
+  133_785,
+  112_234,
+  52693,
+  73606,
+  116_199,
+  72505,
+  137_500,
+  64873,
+  147_893,
+  56938,
+  87481,
+  146_006,
+  82226,
+  133_657,
+  84149,
+  123_742,
+  137_593,
+  55372,
+  64696,
+  54386,
+  83466,
+  135_058,
+  133_268,
+  84234,
+  119_067,
+  143_566,
+  134_224
+]
+
+total_fuel =
+  raw_data
+  |> Enum.map(&FuelCalculator.calc_fuel/1)
+  |> Enum.reduce(0, fn val, acc -> val + acc end)
+
+IO.puts(total_fuel)
